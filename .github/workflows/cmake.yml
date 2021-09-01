@@ -239,7 +239,7 @@ jobs:
       run: cp bin/edm_MacOSX_arm.plugin test/edm.plugin
     - name: Run integration benchmark
       working-directory: ${{github.workspace}}/arm/test
-      run: env /usr/bin/arch -arm64 /Applications/Stata/StataMP.app/Contents/MacOS/StataMP -e -q speed-test.do
+      run: _JAVA_OPTIONS='-XX:+TieredCompilation -XX:TieredStopAtLevel=1' env /usr/bin/arch -arm64 /Applications/Stata/StataMP.app/Contents/MacOS/StataMP -e -q speed-test.do
 
   speed-test-mac-x64:
     runs-on: macos
@@ -277,7 +277,7 @@ jobs:
       run: cp bin/edm_MacOSX_arm.plugin test/edm.plugin
     - name: Run integration benchmark
       working-directory: ${{github.workspace}}/arm/test
-      run: env /usr/bin/arch -arm64 /Applications/Stata/StataMP.app/Contents/MacOS/StataMP -e -q single-thread-speed-test.do
+      run: _JAVA_OPTIONS='-XX:+TieredCompilation -XX:TieredStopAtLevel=1' env /usr/bin/arch -arm64 /Applications/Stata/StataMP.app/Contents/MacOS/StataMP -e -q single-thread-speed-test.do
 
   single-thread-speed-test-mac-x64:
     runs-on: macos
