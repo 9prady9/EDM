@@ -1009,7 +1009,7 @@ void af_make_prediction(const int npreds, const Options& opts,
               validDistPair.dists, M.yvec, M.mdata,
               opts.algorithm, M.E_actual, M.nobs, npreds, k);
     } else {
-      sDists = validDistPair.dists;
+      sDists = af::select(validDistPair.inds, validDistPair.dists, MISSING);
       yvecs = M.yvec;
       smData = M.mdata;
     }
