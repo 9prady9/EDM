@@ -42,7 +42,9 @@ find_package(fmt CONFIG REQUIRED)
 find_package(nlohmann_json 3.2.0 REQUIRED)
 if (EDM_WITH_ARRAYFIRE)
   find_package(CUDA REQUIRED)
-  set(CUDA_PROPAGATE_HOST_FLAGS OFF)
+  if (NOT WIN32)
+    set(CUDA_PROPAGATE_HOST_FLAGS OFF)
+  endif ()
 
   find_package(ArrayFire CONFIG REQUIRED)
 
@@ -99,12 +101,19 @@ set(COMMON_SRC src/common.cpp src/common.h
                src/thread_pool.cpp src/thread_pool.h
                )
 if (EDM_WITH_ARRAYFIRE)
-  CUDA_ADD_LIBRARY(cu_lpDistance
-    src/lp_distance.cu
-    src/lp_distance.cuh
-    STATIC
-    OPTIONS
-    -Xcompiler -fPIC)
+  if (WIN32)
+    CUDA_ADD_LIBRARY(cu_lpDistance
+      src/lp_distance.cu
+      src/lp_distance.cuh
+      STATIC)
+  else ()
+    CUDA_ADD_LIBRARY(cu_lpDistance
+      src/lp_distance.cu
+      src/lp_distance.cuh
+      STATIC
+      OPTIONS
+      -Xcompiler -fPIC)
+  endif ()
 endif ()
 
 # The main EDM plugin for Stata
